@@ -7,10 +7,10 @@
     # nosd monorepo：每组件一个 input 钉各自 <component>-v<version> tag，
     # 可独立升级（nix flake update nosd-gtk-theme 只动该组件）。
     # 首个组件 tag 就位前统一 pin 重构后 commit。
-    nosdshell.url = "github:nosDshell/nosd/a3a985e475fa7cc8a698c30984716e0195b0a9b8";
-    nosd-gtk-theme.url = "github:nosDshell/nosd/a3a985e475fa7cc8a698c30984716e0195b0a9b8";
-    nosd-kvantum-theme.url = "github:nosDshell/nosd/a3a985e475fa7cc8a698c30984716e0195b0a9b8";
-    fcitx5-theme-nosd.url = "github:nosDshell/nosd/a3a985e475fa7cc8a698c30984716e0195b0a9b8";
+    nosdshell.url = "github:nosDshell/nosd/260ffde33ee1edb9cb885c17ff36211fe87b4f6a";
+    nosd-gtk-theme.url = "github:nosDshell/nosd/260ffde33ee1edb9cb885c17ff36211fe87b4f6a";
+    nosd-kvantum-theme.url = "github:nosDshell/nosd/260ffde33ee1edb9cb885c17ff36211fe87b4f6a";
+    fcitx5-theme-nosd.url = "github:nosDshell/nosd/260ffde33ee1edb9cb885c17ff36211fe87b4f6a";
   };
 
   outputs =
