@@ -31,15 +31,27 @@ nix/dev-shell.nix             # nix develop #dev
 
 ## Guix
 
-`.guix-channel` 声明 `directory = "guix"`。在 `channels.scm` 加入：
+`.guix-channel` 声明 `directory = "guix"`。Channel 启用提交认证
+（introduction commit `ffed3941b88829b250a67ce6f8ff0fc6c5d189a0`，
+keyring 分支存公钥）。在 `channels.scm` 加入：
 
 ```scheme
 (cons* (channel
         (name 'nosd)
         (url "https://github.com/nosDshell/nosd-pkgs")
-        (branch "main"))
+        (branch "main")
+        (introduction
+         (make-channel-introduction
+          "ffed3941b88829b250a67ce6f8ff0fc6c5d189a0"
+          (openpgp-fingerprint
+           "62711D5E9CCDEC6907CADBF88637132222571907"))))
        %default-channels)
 ```
+
+本仓开发者注意：`.guix-authorizations` 之后的所有提交必须由授权
+key 签名；`.git/config` 已写入 introduction 并安装 pre-push 认证
+钩子（`guix git authenticate`）。新增授权 key 时同时更新
+`.guix-authorizations` 与 `keyring` 分支。
 
 `guix pull` 后：`guix install nosdshell`，主题包
 `nosd-gtk-theme` / `nosd-kvantum-theme` / `fcitx5-theme-nosd` /
