@@ -66,13 +66,57 @@ Guix Home 服务：
 
 ## Nix
 
-- 包：`packages.<system>.{nosdshell, nosd-gtk-theme, nosd-kvantum-theme,
-  fcitx5-theme-nosd}`（`default` = nosdshell）
-- overlay：`overlays.default`
-- Home Manager：`homeModules.default` → `programs.nosdshell`
-- NixOS：`nixosModules.default` → `services.nosdshell`
-- 开发 shell：`nix develop github:nosDshell/nosd-pkgs#dev`
-  （qmllint/qmlfmt/lefthook/nix 工具链）
+flake 输出：`packages.<system>.{nosdshell, nosd-gtk-theme,
+nosd-kvantum-theme, fcitx5-theme-nosd}`（`default` = nosdshell）、
+`overlays.default`、`homeModules.default`（`programs.nosdshell`）、
+`nixosModules.default`（`services.nosdshell`）、`devShells.dev`。
+
+临时试用：`nix run github:nosDshell/nosd-pkgs`。
+
+永久安装（profile）：`nix profile install github:nosDshell/nosd-pkgs#nosdshell`。
+
+NixOS（在你的 flake 里）：
+
+```nix
+{
+  inputs.nosd-pkgs.url = "github:nosDshell/nosd-pkgs";
+
+  outputs = { nixpkgs, nosd-pkgs, ... }: {
+    nixosConfigurations.<主机名> = nixpkgs.lib.nixosSystem {
+      modules = [
+        nosd-pkgs.nixosModules.default
+        { services.nosdshell.enable = true; }
+      ];
+    };
+  };
+}
+```
+
+Home Manager：
+
+```nix
+{
+  inputs.nosd-pkgs.url = "github:nosDshell/nosd-pkgs";
+
+  outputs = { home-manager, nosd-pkgs, ... }: {
+    homeConfigurations.<用户名> = home-manager.lib.homeManagerConfiguration {
+      modules = [
+        nosd-pkgs.homeModules.default
+        {
+          programs.nosdshell = {
+            enable = true;
+            # settings / colors / user-templates / plugins / pluginSettings
+            # 见 nix/modules/home.nix 的 options 块
+          };
+        }
+      ];
+    };
+  };
+}
+```
+
+开发 shell：`nix develop github:nosDshell/nosd-pkgs#dev`
+（qmllint/qmlfmt/lefthook/nix 工具链）。
 
 ## pin 模型
 
@@ -86,8 +130,9 @@ pin**：
   `nix flake update <input>` 只升级该组件。
 
 **过渡期**：首个 `nosdshell-v*` tag 出现前，全部 pin
-重构后 commit `a3a985e`。旧 `v1.7.x` tag 指向 monorepo 前的根布局
-（shell 在仓根），不能用于 `packages/nosdshell` 打包。
+monorepo main 上的 commit（当前 `260ffde`）。旧 `v1.7.x` tag 指向
+monorepo 前的根布局（shell 在仓根），不能用于 `packages/nosdshell`
+打包。
 
 ## 更新流程（手动，本地签名）
 
