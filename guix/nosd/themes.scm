@@ -22,7 +22,7 @@
   #:use-module (gnu packages gtk)
   #:use-module (gnu packages qt))
 
-(define %nosd-commit "260ffde33ee1edb9cb885c17ff36211fe87b4f6a")
+(define %nosd-commit "1ff7693436b1e25b56727eab77909e8ea06f15d1")
 
 (define (nosd-source component version commit hash)
   "git-fetch the nosd monorepo at COMMIT, named after COMPONENT."
@@ -37,7 +37,7 @@
 
 ;;; 各组件共享同一 commit 树时的 hash（git worktree 实测）；分开 pin
 ;;; 后逐项重算：git worktree add <tmp> <ref> && guix hash -S nar -x <tmp>
-(define %nosd-hash "1limw72kls87gagq5h4ji7n1zs8c5ypwhl3qix3cmpfn9v2b81cw")
+(define %nosd-hash "0d0dxl9rnfic0i48vb3cyj2k6xxyx96cf85s71frxvb8py1pj11s")
 
 (define-public nosd-gtk-theme
   (package

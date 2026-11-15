@@ -54,7 +54,7 @@
 ;; The monorepo checkout contains all components; every package phases
 ;; into packages/nosdshell before building.
 (define %nosdshell-version "1.7.6.1")
-(define %nosdshell-commit "260ffde33ee1edb9cb885c17ff36211fe87b4f6a")
+(define %nosdshell-commit "1ff7693436b1e25b56727eab77909e8ea06f15d1")
 
 (define %nosdshell-source
   (origin
@@ -66,7 +66,7 @@
           (commit %nosdshell-commit)))
     (file-name (git-file-name "nosd" %nosdshell-version))
     (sha256
-     (base32 "1limw72kls87gagq5h4ji7n1zs8c5ypwhl3qix3cmpfn9v2b81cw"))))
+     (base32 "0d0dxl9rnfic0i48vb3cyj2k6xxyx96cf85s71frxvb8py1pj11s"))))
 
 ;; Our quickshell fork (nosDshell/quickshell-nosd): upstream master
 ;; kept linear on top of the version 0.3.2 commit by a daily CI sync
