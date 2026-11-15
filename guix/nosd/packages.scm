@@ -8,11 +8,12 @@
 ;;; the former nosDshell repo's nosdshell.scm.
 ;;;
 ;;; Sources are git-fetch'd from the nosd monorepo — unlike the old
-;;; self-channel, the packages here pin a commit/tag, never local-file.
-;;; Transition note: %nosdshell-commit currently pins a post-monorepo
-;;; commit on main; switch git-reference to the component tag
-;;; "nosdshell-v<version>" once the first prefixed tag exists.  Old
-;;; v1.7.x tags point at the pre-monorepo root layout and cannot be
+;;; self-channel, the packages here pin the commit of a released component
+;;; tag, never a bare main commit.  tools/check-pins.py verifies that each
+;;; (version, commit) pair is the newest "<component>-v<version>" tag and
+;;; that the channel never lags behind a release.  The single exception is
+;;; a VCS-tracking package, whose name ends in "-git".
+;;; Old v1.7.x tags point at the pre-monorepo root layout and cannot be
 ;;; used for packages/nosdshell.
 
 (define-module (nosd packages)
@@ -53,20 +54,21 @@
 ;;
 ;; The monorepo checkout contains all components; every package phases
 ;; into packages/nosdshell before building.
-(define %nosdshell-version "1.7.6.1")
-(define %nosdshell-commit "1ff7693436b1e25b56727eab77909e8ea06f15d1")
+(define %nosdshell-version "1.7.7")
+;; Must be the commit tagged nosdshell-v1.7.7 (check-pins.py enforces it).
+(define %nosdshell-commit "b9ba11b8e950e07ff2889e0f6fa543bc360b1375")
 
 (define %nosdshell-source
   (origin
     (method git-fetch)
     (uri (git-reference
           (url "https://github.com/nosDshell/nosd")
-          ;; 首个 nosdshell-v* tag 出现后改为
-          ;; (commit (string-append "nosdshell-v" %nosdshell-version))
+          ;; 钉 tag 的提交而不是 tag 名：channel 落地的是不可变对象，
+          ;; tag 与 commit 的一致性交给 check-pins.py 校验。
           (commit %nosdshell-commit)))
     (file-name (git-file-name "nosd" %nosdshell-version))
     (sha256
-     (base32 "0d0dxl9rnfic0i48vb3cyj2k6xxyx96cf85s71frxvb8py1pj11s"))))
+     (base32 "1rwlp2s6lgzh0vh0k95gjd34kl414b0nhdizyn6l9lfkbvyqmvcx"))))
 
 ;; Our quickshell fork (nosDshell/quickshell-nosd): upstream master
 ;; kept linear on top of the version 0.3.2 commit by a daily CI sync
@@ -88,9 +90,9 @@
 ;;     environment (nosdshell's wrapper sets the same values) wins.
 ;;
 ;; The fork carries no tags: this is the channel's one VCS-tracking package,
-;; hence the -git suffix (tools/check-pins.py skips it) and a plain commit
-;; pin.  Bump it by hand together with the commit hash in the wrapper's
-;; --version line below.
+;; hence the -git suffix (check-pins.py skips it) and a plain commit pin.
+;; Bump it by hand together with the commit hash in the wrapper's --version
+;; line below.
 (define-public quickshell-nosd-git
   (package
     (inherit quickshell)

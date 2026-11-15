@@ -4,13 +4,13 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    # nosd monorepo：每组件一个 input 钉各自 <component>-v<version> tag，
-    # 可独立升级（nix flake update nosd-gtk-theme 只动该组件）。
-    # 首个组件 tag 就位前统一 pin 重构后 commit。
-    nosdshell.url = "github:nosDshell/nosd/1ff7693436b1e25b56727eab77909e8ea06f15d1";
-    nosd-gtk-theme.url = "github:nosDshell/nosd/1ff7693436b1e25b56727eab77909e8ea06f15d1";
-    nosd-kvantum-theme.url = "github:nosDshell/nosd/1ff7693436b1e25b56727eab77909e8ea06f15d1";
-    fcitx5-theme-nosd.url = "github:nosDshell/nosd/1ff7693436b1e25b56727eab77909e8ea06f15d1";
+    # nosd monorepo：每组件一个 input，钉该组件最新 <component>-v<version>
+    # tag 的提交，可独立升级（nix flake update nosd-gtk-theme 只动该组件）。
+    # 不跟 main 上的裸 commit；tag 一致性由 tools/check-pins.py 校验。
+    nosdshell.url = "github:nosDshell/nosd/b9ba11b8e950e07ff2889e0f6fa543bc360b1375";
+    nosd-gtk-theme.url = "github:nosDshell/nosd/636f50b76e4c73b740af6a3a5770fbb2e32ca6cc";
+    nosd-kvantum-theme.url = "github:nosDshell/nosd/07928f5f0ad5dbde9f2783e590f36376fd34a554";
+    fcitx5-theme-nosd.url = "github:nosDshell/nosd/1835d8a0546e2f38834dbd0ccc3818d78833ba5e";
   };
 
   outputs =
@@ -34,7 +34,7 @@
 
       # nosdshell 版本：发版时主版本号跟 Commons/Version.qml baseVersion，
       # shortRev 后缀保留。主题组件版本在 nix/packages/themes.nix。
-      nosdshellVersion = "1.7.6.1_" + (nosdshell.shortRev or "dirty");
+      nosdshellVersion = "1.7.7_" + (nosdshell.shortRev or "dirty");
 
       themeSrcs = {
         nosd-gtk-theme = nosd-gtk-theme + "/packages/nosd-gtk-theme";

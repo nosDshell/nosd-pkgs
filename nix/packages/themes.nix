@@ -32,7 +32,7 @@ in
 {
   nosd-gtk-theme = mkTheme {
     pname = "nosd-gtk-theme";
-    version = "0.2.0";
+    version = "0.3.0";
     src = srcs.nosd-gtk-theme;
     description = "DDE 15-style GTK themes (deepin / deepin-dark) for the nosDshell desktop";
     installPhase = ''
@@ -44,7 +44,7 @@ in
 
   nosd-kvantum-theme = mkTheme {
     pname = "nosd-kvantum-theme";
-    version = "0.1.0";
+    version = "0.2.0";
     src = srcs.nosd-kvantum-theme;
     description = "nosd Kvantum theme for Qt applications";
     installPhase = ''
@@ -56,7 +56,7 @@ in
 
   fcitx5-theme-nosd = mkTheme {
     pname = "fcitx5-theme-nosd";
-    version = "1.1.0";
+    version = "1.2.0";
     src = srcs.fcitx5-theme-nosd;
     description = "deepin-style fcitx5 input method skins (deepin-light / deepin-dark)";
     installPhase = ''

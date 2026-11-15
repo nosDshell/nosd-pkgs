@@ -4,13 +4,11 @@
 ;;; Theme components of the nosd monorepo.  Migrated from the jeans
 ;;; channel's nosd-app-themes package (modules/jeans/packages/theme.scm),
 ;;; split into per-component packages: each pins its own
-;;; <component>-v<version> tag (or interim commit) so they can be bumped
-;;; independently, matching the monorepo's independent-release model
-;;; (docs/adr/0001).
+;;; <component>-v<version> tag commit so they can be bumped independently,
+;;; matching the monorepo's independent-release model (docs/adr/0001).
 ;;;
-;;; Until the first component tags exist all three pin the same
-;;; post-monorepo commit; afterwards each *-version/*-commit pair moves
-;;; on its own component tag.
+;;; Every %<component>-version / -commit / -hash triple must be the newest
+;;; release tag of that component; tools/check-pins.py enforces it.
 
 (define-module (nosd themes)
   #:use-module (guix gexp)
@@ -22,28 +20,43 @@
   #:use-module (gnu packages gtk)
   #:use-module (gnu packages qt))
 
-(define %nosd-commit "1ff7693436b1e25b56727eab77909e8ea06f15d1")
-
 (define (nosd-source component version commit hash)
   "git-fetch the nosd monorepo at COMMIT, named after COMPONENT."
   (origin
     (method git-fetch)
     (uri (git-reference
           (url "https://github.com/nosDshell/nosd")
-          ;; tag 就位后改为 (string-append component "-v" version)
+          ;; 钉 tag 的提交，tag 一致性由 tools/check-pins.py 校验。
           (commit commit)))
     (file-name (git-file-name component version))
     (sha256 (base32 hash))))
 
-;;; 各组件共享同一 commit 树时的 hash（git worktree 实测）；分开 pin
-;;; 后逐项重算：git worktree add <tmp> <ref> && guix hash -S nar -x <tmp>
-(define %nosd-hash "0d0dxl9rnfic0i48vb3cyj2k6xxyx96cf85s71frxvb8py1pj11s")
+;;; 每个组件一组 pin：version 即 tag 的版本，commit 是 tag 指向的提交。
+;;; hash 重算：git worktree add <tmp> <component>-v<version> &&
+;;;            guix hash -S nar -x <tmp>
+(define %nosd-gtk-theme-version "0.3.0")
+(define %nosd-gtk-theme-commit "636f50b76e4c73b740af6a3a5770fbb2e32ca6cc")
+(define %nosd-gtk-theme-hash
+  "0q0ni9lj493gixapyf0bdhdsxwlyq8p1jpli7qqrssbsxy09g7yr")
+
+(define %nosd-kvantum-theme-version "0.2.0")
+(define %nosd-kvantum-theme-commit
+  "07928f5f0ad5dbde9f2783e590f36376fd34a554")
+(define %nosd-kvantum-theme-hash
+  "1v1n9mnq8sjpqhw2d8f9wp1gl48ky4vrk8lcqram2kkjml36gksj")
+
+(define %fcitx5-theme-nosd-version "1.2.0")
+(define %fcitx5-theme-nosd-commit
+  "1835d8a0546e2f38834dbd0ccc3818d78833ba5e")
+(define %fcitx5-theme-nosd-hash
+  "0774rmzccx31zm5n859c8baiiklyih6qd2qg3ns7syipx999n8zp")
 
 (define-public nosd-gtk-theme
   (package
     (name "nosd-gtk-theme")
-    (version "0.2.0")
-    (source (nosd-source name version %nosd-commit %nosd-hash))
+    (version %nosd-gtk-theme-version)
+    (source (nosd-source name version
+                         %nosd-gtk-theme-commit %nosd-gtk-theme-hash))
     (build-system copy-build-system)
     (arguments
      (list
@@ -71,8 +84,10 @@ palette without editing any theme file.  Shape tokens follow
 (define-public nosd-kvantum-theme
   (package
     (name "nosd-kvantum-theme")
-    (version "0.1.0")
-    (source (nosd-source name version %nosd-commit %nosd-hash))
+    (version %nosd-kvantum-theme-version)
+    (source (nosd-source name version
+                         %nosd-kvantum-theme-commit
+                         %nosd-kvantum-theme-hash))
     (build-system copy-build-system)
     (arguments
      (list
@@ -94,8 +109,10 @@ wallpaper-derived variant at runtime.  Installs as @file{share/Kvantum/nosd}.")
 (define-public fcitx5-theme-nosd
   (package
     (name "fcitx5-theme-nosd")
-    (version "1.1.0")
-    (source (nosd-source name version %nosd-commit %nosd-hash))
+    (version %fcitx5-theme-nosd-version)
+    (source (nosd-source name version
+                         %fcitx5-theme-nosd-commit
+                         %fcitx5-theme-nosd-hash))
     (build-system copy-build-system)
     (arguments
      (list
