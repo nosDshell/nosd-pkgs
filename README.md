@@ -14,7 +14,7 @@ home service（`modules/jeans/packages/{desktop,theme}.scm`、
 
 ```
 guix/nosd/
-├── packages.scm              # (nosd packages): quickshell-nosd, nosd-blur,
+├── packages.scm              # (nosd packages): quickshell-nosd-git, nosd-blur,
 │                             #   nosd-helpers, nosd-theme, nosdshell
 ├── themes.scm                # (nosd themes): nosd-gtk-theme,
 │                             #   nosd-kvantum-theme, fcitx5-theme-nosd,
@@ -23,6 +23,7 @@ guix/nosd/
 │                             #   vendored crate inputs（生成物，勿手改）
 └── home/services/desktop.scm # (nosd home services desktop):
                               #   home-nosdshell-service-type
+tools/check-pins.py           # pin 守卫：只跟发版 tag、不落后（每日 CI 跑）
 flake.nix                     # 包 + overlay + HM/NixOS 模块 + dev shell
 nix/packages/                 # nosdshell.nix, themes.nix
 nix/modules/                  # home.nix, nixos.nix
@@ -121,28 +122,39 @@ Home Manager：
 ## pin 模型
 
 monorepo 组件独立发版（`<component>-v<version>` tag），本仓**按组件
-pin**：
+pin，且只跟发版 tag**：
 
-- Guix：每个包独立的 version/commit/hash（`nosd-source` helper）；
+- Guix：每个组件一组 version/commit/hash（`nosd-source` helper）；
   nosdshell 组（shell + 三个 Rust 工具）共享 `%nosdshell-source`，
-  因为 `tools/` 与 shell 同树演进。
-- Nix：每组件一个 flake input，钉组件 tag；
+  因为 `tools/` 与 shell 同树演进。commit 必须是该组件最新 tag 的提交。
+- Nix：每组件一个 flake input，钉同一 tag 的提交；
   `nix flake update <input>` 只升级该组件。
+- **不追 main 上的裸 commit。** 确实要跟 commit 的包一律以 `-git`
+  结尾（当前只有 `quickshell-nosd-git`：fork 没有 tag，只能按
+  commit 跟），`check-pins.py` 跳过它们。
+- **发版是两段**：`nosd` 仓出包成功只算第一段，同步 bump 本仓才算
+  完成。`tools/check-pins.py` 对比上游 tag——落后、commit 不是 tag
+  提交、pin 的 tag 不存在都会失败；`.github/workflows/pins.yml` 每日
+  跑一次，漏 bump 最多一天就标红。
 
-**过渡期**：首个 `nosdshell-v*` tag 出现前，全部 pin
-monorepo main 上的 commit（当前 `260ffde`）。旧 `v1.7.x` tag 指向
-monorepo 前的根布局（shell 在仓根），不能用于 `packages/nosdshell`
-打包。
+旧 `v1.7.x` tag 指向 monorepo 前的根布局（shell 在仓根），不能用于
+`packages/nosdshell` 打包。
 
 ## 更新流程（手动，本地签名）
 
-1. 组件发版后，改对应 version/commit/hash：
-   - Guix：`git worktree add /tmp/wt <tag>` →
-     `guix hash -S nar -x /tmp/wt` → `git worktree remove /tmp/wt`
-   - Nix：更新 flake input 的 ref，`nix flake update <input>`
-2. `quickshell-nosd` pin 只在 fork 推进时动（`packages.scm` 里
+1. 上游发版后，改对应组件的 version/commit：
+   - Guix：`guix/nosd/{packages,themes}.scm` 里该组件的
+     `version` + `commit`；tag 指向的提交用
+     `git -C ../nosd rev-list -n1 <component>-v<version>` 取。
+   - Nix：`flake.nix` 的 input rev（同一提交），主题组件另改
+     `nix/packages/themes.nix` 的 version，nosdshell 改
+     `nosdshellVersion`。
+2. 重算该组件的 hash：`git worktree add /tmp/wt <tag>` →
+   `guix hash -S nar -x /tmp/wt` → `git worktree remove /tmp/wt`。
+3. `python3 tools/check-pins.py` 必须全绿（它会拉上游 tag 做对比）。
+4. `quickshell-nosd-git` pin 只在 fork 推进时动（`packages.scm` 里
    commit + base32，以及 nosdshell wrapper 的 `--version` 行）。
-3. 本地 GPG 签名提交，不交给 bot。
+5. 本地 GPG 签名提交，不交给 bot。
 
 ## 开发回环
 

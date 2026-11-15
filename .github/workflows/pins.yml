@@ -1,0 +1,23 @@
+name: channel pins
+
+# 频道 pin 守卫：包只跟随上游发版 tag，且必须跟到最新一版。
+# 每日跑一次是为了让「发版了但忘了同步 nosd-pkgs」在一个发布周期内变红，
+# 而不是等下一个用频道的人发现装到的还是旧版本。
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pins:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: 校验 pin 只跟随发版 tag 且不落后
+        run: python3 tools/check-pins.py
