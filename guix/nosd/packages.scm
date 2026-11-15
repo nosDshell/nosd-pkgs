@@ -87,12 +87,14 @@
 ;;     QTimer calls malloc_trim every five minutes.  Explicit MALLOC_*
 ;;     environment (nosdshell's wrapper sets the same values) wins.
 ;;
-;; The fork carries no tags; bump it by hand together with the commit
-;; hash in the wrapper's --version line below.
-(define-public quickshell/nosd
+;; The fork carries no tags: this is the channel's one VCS-tracking package,
+;; hence the -git suffix (tools/check-pins.py skips it) and a plain commit
+;; pin.  Bump it by hand together with the commit hash in the wrapper's
+;; --version line below.
+(define-public quickshell-nosd-git
   (package
     (inherit quickshell)
-    (name "quickshell-nosd")
+    (name "quickshell-nosd-git")
     (version "0.3.2")
     (source
      (origin
@@ -277,7 +279,7 @@ template rendering.")
                 ;; starting the shell (lowercase -v is quickshell's verbose flag
                 ;; and must fall through).  The nosdshell part follows
                 ;; %nosdshell-version; keep the quickshell part in sync with
-                ;; quickshell/nosd above.  The MALLOC block mirrors the wrapper
+                ;; quickshell-nosd-git above.  The MALLOC block mirrors the wrapper
                 ;; the flake's package.nix generates — the fork binary
                 ;; mallopts the same defaults in-process, so the env vars are
                 ;; the user-facing override path (glibc reads them at startup,
@@ -367,7 +369,7 @@ exec ~a --config ~a/etc/xdg/quickshell/nosdshell \"$@\"~%"
            qtdeclarative
            qtmultimedia
            qtwayland
-           quickshell/nosd
+           quickshell-nosd-git
            util-linux
            which
            wl-clipboard
