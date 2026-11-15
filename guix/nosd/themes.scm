@@ -61,8 +61,8 @@
     (arguments
      (list
       #:install-plan
-      #~'(("packages/nosd-gtk-theme/deepin" "share/themes/deepin")
-          ("packages/nosd-gtk-theme/deepin-dark" "share/themes/deepin-dark")
+      #~'(("packages/nosd-gtk-theme/nosd" "share/themes/nosd")
+          ("packages/nosd-gtk-theme/nosd-dark" "share/themes/nosd-dark")
           ("packages/nosd-gtk-theme/README.md" "share/doc/nosd-gtk-theme/")
           ("packages/nosd-gtk-theme/README.zh_CN.md" "share/doc/nosd-gtk-theme/")
           ("packages/nosd-gtk-theme/CHANGELOG.md" "share/doc/nosd-gtk-theme/")
@@ -72,7 +72,7 @@
     (home-page "https://github.com/nosDshell/nosd")
     (synopsis "DDE 15-style GTK themes for the nosDshell desktop")
     (description
-     "The deepin and deepin-dark GTK 2/3/4 themes (including Cinnamon,
+     "The nosd and nosd-dark GTK 2/3/4 themes (including Cinnamon,
 GNOME Shell, Metacity, Unity and Xfwm4 skins).  Every colour literal is
 routed through @@define-color so nosDshell can inject a wallpaper-derived
 palette without editing any theme file.  Shape tokens follow
@@ -117,14 +117,14 @@ wallpaper-derived variant at runtime.  Installs as @file{share/Kvantum/nosd}.")
     (arguments
      (list
       #:install-plan
-      #~'(("packages/fcitx5-theme-nosd/deepin-light" "share/fcitx5/themes/deepin-light")
-          ("packages/fcitx5-theme-nosd/deepin-dark" "share/fcitx5/themes/deepin-dark")
+      #~'(("packages/fcitx5-theme-nosd/nosd" "share/fcitx5/themes/nosd")
+          ("packages/fcitx5-theme-nosd/nosd-dark" "share/fcitx5/themes/nosd-dark")
           ("packages/fcitx5-theme-nosd/README.md" "share/doc/fcitx5-theme-nosd/")
           ("packages/fcitx5-theme-nosd/CHANGELOG.md" "share/doc/fcitx5-theme-nosd/"))))
     (home-page "https://github.com/nosDshell/nosd")
     (synopsis "deepin-style fcitx5 input method skins")
     (description
-     "deepin-light and deepin-dark fcitx5 skins for the nosDshell desktop,
+     "The nosd and nosd-dark fcitx5 skins for the nosDshell desktop,
 installed under @file{share/fcitx5/themes/}.")
     (properties `((upstream-name . "nosd")
                   (release-tag-prefix . "^fcitx5-theme-nosd-v")))
