@@ -4,19 +4,30 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    # Dlea：flea 的 fork，整体改名 dlea（二进制、D-Bus、数据路径）。
+    # 固定到改名提交；与 Guix 侧 (nosd dlea) 的 %dlea-commit 同步升级。
+    dlea-src.url = "github:nosDshell/Dlea/d41392b9bdd504609c9d0ef3dda9c3bc2527c8b9";
+    # Dlea 仓没有 flake.nix，这里只要它的源码树。
+    dlea-src.flake = false;
+
     # nosd monorepo：每组件一个 input，钉该组件最新 <component>-v<version>
     # tag 的提交，可独立升级（nix flake update nosd-gtk-theme 只动该组件）。
     # 不跟 main 上的裸 commit；tag 一致性由 tools/check-pins.py 校验。
     nosdshell.url = "github:nosDshell/nosd/b9ba11b8e950e07ff2889e0f6fa543bc360b1375";
+    nosdshell.flake = false;
     nosd-gtk-theme.url = "github:nosDshell/nosd/636f50b76e4c73b740af6a3a5770fbb2e32ca6cc";
+    nosd-gtk-theme.flake = false;
     nosd-kvantum-theme.url = "github:nosDshell/nosd/07928f5f0ad5dbde9f2783e590f36376fd34a554";
+    nosd-kvantum-theme.flake = false;
     fcitx5-theme-nosd.url = "github:nosDshell/nosd/1835d8a0546e2f38834dbd0ccc3818d78833ba5e";
+    fcitx5-theme-nosd.flake = false;
   };
 
   outputs =
     {
       self,
       nixpkgs,
+      dlea-src,
       nosdshell,
       nosd-gtk-theme,
       nosd-kvantum-theme,
@@ -50,6 +61,7 @@
         {
           default = pkgsFor.${system}.nosdshell;
           inherit (pkgsFor.${system})
+            dlea
             nosdshell
             nosd-gtk-theme
             nosd-kvantum-theme
@@ -66,6 +78,10 @@
             };
           in
           {
+            dlea = final.callPackage ./nix/packages/dlea.nix {
+              src = dlea-src;
+              version = "0.4.3";
+            };
             nosdshell = final.callPackage ./nix/packages/nosdshell.nix {
               src = nosdshell + "/packages/nosdshell";
               version = nosdshellVersion;

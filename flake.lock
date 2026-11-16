@@ -1,0 +1,117 @@
+{
+  "nodes": {
+    "dlea-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794796377,
+        "narHash": "sha256-NeD8S1mQ42TfhrniZysfBPhtpUokp4A3bW08C22UAYI=",
+        "owner": "nosDshell",
+        "repo": "Dlea",
+        "rev": "d41392b9bdd504609c9d0ef3dda9c3bc2527c8b9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nosDshell",
+        "repo": "Dlea",
+        "rev": "d41392b9bdd504609c9d0ef3dda9c3bc2527c8b9",
+        "type": "github"
+      }
+    },
+    "fcitx5-theme-nosd": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794766462,
+        "narHash": "sha256-9yObUuo3en20HQ+Lhg2Mns4Y1UIsFWRL/WF0xn7N5Bw=",
+        "owner": "nosDshell",
+        "repo": "nosd",
+        "rev": "1835d8a0546e2f38834dbd0ccc3818d78833ba5e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nosDshell",
+        "repo": "nosd",
+        "rev": "1835d8a0546e2f38834dbd0ccc3818d78833ba5e",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1794537146,
+        "narHash": "sha256-Wpz/7x/YWnDIBu7yj6ixe8j6fIMsidd9Y+o1PqPF3iM=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "d5cc6833999746cffdfe0598f7bc801a57b887a9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nosd-gtk-theme": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794766453,
+        "narHash": "sha256-2Z+XgO96aZ0xPpFeGS7CnvKuG2wLOH9Vj28kImmKFmA=",
+        "owner": "nosDshell",
+        "repo": "nosd",
+        "rev": "636f50b76e4c73b740af6a3a5770fbb2e32ca6cc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nosDshell",
+        "repo": "nosd",
+        "rev": "636f50b76e4c73b740af6a3a5770fbb2e32ca6cc",
+        "type": "github"
+      }
+    },
+    "nosd-kvantum-theme": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794766457,
+        "narHash": "sha256-Us9nBq1yTlFVxoyimTfxExH6wuXJoSY4xFdqhG1NNuw=",
+        "owner": "nosDshell",
+        "repo": "nosd",
+        "rev": "07928f5f0ad5dbde9f2783e590f36376fd34a554",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nosDshell",
+        "repo": "nosd",
+        "rev": "07928f5f0ad5dbde9f2783e590f36376fd34a554",
+        "type": "github"
+      }
+    },
+    "nosdshell": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794766465,
+        "narHash": "sha256-ne2K/V7T0USN9T82aMEigdBJRpOvpAngBvA/arS4lOc=",
+        "owner": "nosDshell",
+        "repo": "nosd",
+        "rev": "b9ba11b8e950e07ff2889e0f6fa543bc360b1375",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nosDshell",
+        "repo": "nosd",
+        "rev": "b9ba11b8e950e07ff2889e0f6fa543bc360b1375",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "dlea-src": "dlea-src",
+        "fcitx5-theme-nosd": "fcitx5-theme-nosd",
+        "nixpkgs": "nixpkgs",
+        "nosd-gtk-theme": "nosd-gtk-theme",
+        "nosd-kvantum-theme": "nosd-kvantum-theme",
+        "nosdshell": "nosdshell"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

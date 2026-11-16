@@ -21,11 +21,14 @@ guix/nosd/
 │                             #   nosd-themes (union)
 ├── rust-crates.scm           # (nosd rust-crates): 三个 Rust 工具的
 │                             #   vendored crate inputs（生成物，勿手改）
+├── dlea.scm                  # (nosd dlea): dlea（发布快照）、dlea-git（跟 main）
+├── dlea-rust-crates.scm      # (nosd dlea-rust-crates): dlea 的 vendored
+│                             #   crate inputs（生成物，勿手改）
 └── home/services/desktop.scm # (nosd home services desktop):
                               #   home-nosdshell-service-type
 tools/check-pins.py           # pin 守卫：只跟发版 tag、不落后（每日 CI 跑）
 flake.nix                     # 包 + overlay + HM/NixOS 模块 + dev shell
-nix/packages/                 # nosdshell.nix, themes.nix
+nix/packages/                 # nosdshell.nix, themes.nix, dlea.nix
 nix/modules/                  # home.nix, nixos.nix
 nix/dev-shell.nix             # nix develop #dev
 ```
@@ -56,7 +59,8 @@ key 签名；`.git/config` 已写入 introduction 并安装 pre-push 认证
 
 `guix pull` 后：`guix install nosdshell`，主题包
 `nosd-gtk-theme` / `nosd-kvantum-theme` / `fcitx5-theme-nosd` /
-`nosd-themes`（union）。
+`nosd-themes`（union），文件管理器 `dlea`；想跟 main 用 `dlea-git`。
+两者装同一组 `dlea`/`dlea-gui` 命令，不要同时装。
 
 Guix Home 服务：
 
@@ -67,7 +71,7 @@ Guix Home 服务：
 
 ## Nix
 
-flake 输出：`packages.<system>.{nosdshell, nosd-gtk-theme,
+flake 输出：`packages.<system>.{nosdshell, dlea, nosd-gtk-theme,
 nosd-kvantum-theme, fcitx5-theme-nosd}`（`default` = nosdshell）、
 `overlays.default`、`homeModules.default`（`programs.nosdshell`）、
 `nixosModules.default`（`services.nosdshell`）、`devShells.dev`。
@@ -132,6 +136,10 @@ pin，且只跟发版 tag**：
 - **不追 main 上的裸 commit。** 确实要跟 commit 的包一律以 `-git`
   结尾（当前只有 `quickshell-nosd-git`：fork 没有 tag，只能按
   commit 跟），`check-pins.py` 跳过它们。
+- **Dlea 暂按 commit 跟：** fork 还没有 release tag，`dlea` 钉的是
+  首个改名提交（等价于发布快照），`dlea-git` 跟 main 且与它同源。
+  Dlea 出 `vX.Y.Z` tag 后，把 `dlea` 切到 tag，并让它进
+  `check-pins.py` 的 `COMPONENTS` 表。
 - **发版是两段**：`nosd` 仓出包成功只算第一段，同步 bump 本仓才算
   完成。`tools/check-pins.py` 对比上游 tag——落后、commit 不是 tag
   提交、pin 的 tag 不存在都会失败；`.github/workflows/pins.yml` 每日
