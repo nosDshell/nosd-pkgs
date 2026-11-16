@@ -39,11 +39,11 @@
 (define %nosd-gtk-theme-hash
   "0q0ni9lj493gixapyf0bdhdsxwlyq8p1jpli7qqrssbsxy09g7yr")
 
-(define %nosd-kvantum-theme-version "0.2.0")
+(define %nosd-kvantum-theme-version "0.3.0")
 (define %nosd-kvantum-theme-commit
-  "07928f5f0ad5dbde9f2783e590f36376fd34a554")
+  "5154dc349eba9fe05440f20bdaecc997ae4c82e3")
 (define %nosd-kvantum-theme-hash
-  "1v1n9mnq8sjpqhw2d8f9wp1gl48ky4vrk8lcqram2kkjml36gksj")
+  "1sp5sxmqpa77xx2ibxvqgf3daivkls3x7ksdh5m6r43cpl7pzcrf")
 
 (define %fcitx5-theme-nosd-version "1.2.0")
 (define %fcitx5-theme-nosd-commit
@@ -92,16 +92,18 @@ palette without editing any theme file.  Shape tokens follow
     (arguments
      (list
       #:install-plan
-      #~'(("packages/nosd-kvantum-theme/nosd" "share/Kvantum/nosd")
+      #~'(("packages/nosd-kvantum-theme/KvLibadwaita" "share/Kvantum/KvLibadwaita")
           ("packages/nosd-kvantum-theme/CHANGELOG.md" "share/doc/nosd-kvantum-theme/"))))
     ;; kvantum provides the Qt-side style plugin consuming the theme.
     (inputs (list kvantum))
     (home-page "https://github.com/nosDshell/nosd")
     (synopsis "nosd Kvantum theme for Qt applications")
     (description
-     "The nosd Kvantum widget theme, shipped with its template sources
-(@file{*.kvconfig.tpl}, @file{*.svg.tpl}) so nosDshell can render a
-wallpaper-derived variant at runtime.  Installs as @file{share/Kvantum/nosd}.")
+     "The KvLibadwaita Kvantum widget theme shipped for nosDshell, with the
+upstream light theme and its Dark variant in the same directory (the layout
+Kvantum uses to pick a variant by QStyle key).  Installs as
+@file{share/Kvantum/KvLibadwaita}; nosDshell renders its own
+wallpaper-derived colours into the user copy at runtime.")
     (properties `((upstream-name . "nosd")
                   (release-tag-prefix . "^nosd-kvantum-theme-v")))
     (license license:gpl3+)))

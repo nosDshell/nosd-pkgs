@@ -44,12 +44,12 @@ in
 
   nosd-kvantum-theme = mkTheme {
     pname = "nosd-kvantum-theme";
-    version = "0.2.0";
+    version = "0.3.0";
     src = srcs.nosd-kvantum-theme;
     description = "nosd Kvantum theme for Qt applications";
     installPhase = ''
       mkdir -p $out/share/Kvantum $out/share/doc/nosd-kvantum-theme
-      cp -r nosd $out/share/Kvantum/
+      cp -r KvLibadwaita $out/share/Kvantum/
       cp CHANGELOG.md $out/share/doc/nosd-kvantum-theme/ 2>/dev/null || true
     '';
   };
