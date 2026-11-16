@@ -196,25 +196,42 @@
                                               "com.nosDshell.dlea.desktop")
                     (("^Exec=dlea ")
                      (string-append "Exec=" out "/bin/dlea "))))))
-            (add-after 'install-data 'add-gui-runpath
+            (add-after 'install-data 'add-runpath
               (lambda* (#:key inputs outputs #:allow-other-keys)
-                ;; rustc embeds only the -L paths its build scripts report;
-                ;; gdk-pixbuf and glib are linked through LIBRARY_PATH and
-                ;; never enter the RUNPATH, so validate-runpath fails.  This
-                ;; is the documented cargo-build-system gap for dlopened or
-                ;; indirectly linked system libraries.
-                (use-modules (ice-9 popen) (ice-9 rdelim))
+                ;; rustc embeds only the -L paths its build scripts report,
+                ;; and GPUI reaches Wayland, Vulkan and libglvnd through
+                ;; dlopen, so none of them enter the RUNPATH.  Without this
+                ;; the launcher dies on "The wayland library could not be
+                ;; loaded".  Both entry points get the same list: the
+                ;; launcher links the gpui crates too and fails before it
+                ;; ever execs dlea-gui.
+                (use-modules (ice-9 popen) (ice-9 rdelim)
+                             (srfi srfi-1))
                 (let* ((out (assoc-ref outputs "out"))
-                       (bin (string-append out "/bin/dlea-gui"))
-                       (gdk (assoc-ref inputs "gdk-pixbuf"))
-                       (glib (assoc-ref inputs "glib"))
-                       (pipe (open-pipe* OPEN_READ "patchelf" "--print-rpath" bin))
-                       (rpath (read-line pipe)))
-                  (close-pipe pipe)
-                  (invoke "patchelf" "--set-rpath"
-                          (string-append rpath ":" gdk "/lib:" glib "/lib")
-                          bin))))
-            (add-after 'add-gui-runpath 'wrap-programs
+                       ;; fontconfig's package name is fontconfig-minimal;
+                       ;; filter-map keeps an input that is absent from being
+                       ;; a build failure in a later Guix revision.
+                       (extra (string-join
+                               (filter-map
+                                (lambda (name)
+                                  (let ((path (assoc-ref inputs name)))
+                                    (and path (string-append path "/lib"))))
+                                '("wayland" "libxkbcommon" "libxcb"
+                                  "vulkan-loader" "libglvnd"
+                                  "gdk-pixbuf" "glib" "fontconfig-minimal"
+                                  "freetype" "zlib"))
+                               ":")))
+                  (for-each
+                   (lambda (bin)
+                     (let* ((pipe (open-pipe* OPEN_READ "patchelf"
+                                              "--print-rpath" bin))
+                            (rpath (read-line pipe)))
+                       (close-pipe pipe)
+                       (invoke "patchelf" "--set-rpath"
+                               (string-append rpath ":" extra) bin)))
+                   (list (string-append out "/bin/dlea")
+                         (string-append out "/bin/dlea-gui"))))))
+            (add-after 'add-runpath 'wrap-programs
               (lambda* (#:key outputs #:allow-other-keys)
                 (let* ((out (assoc-ref outputs "out"))
                        (python-path

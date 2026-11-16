@@ -134,10 +134,21 @@ rustPlatform.buildRustPackage {
     runHook postInstall
   '';
 
-  # gdk-pixbuf 与 glib 是 dlopen/间接链接，rustc 不会把它们写进 RUNPATH。
+  # GPUI 通过 dlopen 取 Wayland、Vulkan 与 libglvnd，gdk-pixbuf/glib 也是
+  # 间接链接；这些都不会进 rustc 生成的 RUNPATH，两个入口都要补。
   postFixup = ''
-    patchelf --add-rpath "${lib.makeLibraryPath [ gdk-pixbuf glib ]}" \
-      $out/bin/dlea-gui
+    patchelf --add-rpath "${lib.makeLibraryPath [
+      wayland
+      libxkbcommon
+      libxcb
+      vulkan-loader
+      libGL
+      gdk-pixbuf
+      glib
+      fontconfig
+      freetype
+      zlib
+    ]}" $out/bin/dlea $out/bin/dlea-gui
 
     for helper in dlea-portal dlea-filemanager1 dlea-mpris dlea-udisks; do
       wrapProgram $out/libexec/dlea/$helper \
