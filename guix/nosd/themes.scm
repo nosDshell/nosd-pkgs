@@ -39,11 +39,11 @@
 (define %nosd-gtk-theme-hash
   "0q0ni9lj493gixapyf0bdhdsxwlyq8p1jpli7qqrssbsxy09g7yr")
 
-(define %nosd-kvantum-theme-version "0.3.0")
+(define %nosd-kvantum-theme-version "0.4.0")
 (define %nosd-kvantum-theme-commit
-  "5154dc349eba9fe05440f20bdaecc997ae4c82e3")
+  "0f3cf1a9d754c6312ed4c563c767d4ccdce84f0b")
 (define %nosd-kvantum-theme-hash
-  "1sp5sxmqpa77xx2ibxvqgf3daivkls3x7ksdh5m6r43cpl7pzcrf")
+  "0k9n5rn1bczcyjl8d4imljzp8d3l67pq2hl2z88fvdnlyam82x3j")
 
 (define %fcitx5-theme-nosd-version "1.2.0")
 (define %fcitx5-theme-nosd-commit

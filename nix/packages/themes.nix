@@ -44,7 +44,7 @@ in
 
   nosd-kvantum-theme = mkTheme {
     pname = "nosd-kvantum-theme";
-    version = "0.3.0";
+    version = "0.4.0";
     src = srcs.nosd-kvantum-theme;
     description = "nosd Kvantum theme for Qt applications";
     installPhase = ''

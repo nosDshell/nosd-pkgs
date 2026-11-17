@@ -70,34 +70,34 @@
     "nosd-kvantum-theme": {
       "flake": false,
       "locked": {
-        "lastModified": 1794839188,
-        "narHash": "sha256-LrN/D71skGxqgU3P04emc0fVhnt49xVF7+eoi2vX5eo=",
+        "lastModified": 1794902959,
+        "narHash": "sha256-cnSBqvLUtu0Q+oJCge8xdDR0v6Q1koao9OyzFWwuNk0=",
         "owner": "nosDshell",
         "repo": "nosd",
-        "rev": "5154dc349eba9fe05440f20bdaecc997ae4c82e3",
+        "rev": "0f3cf1a9d754c6312ed4c563c767d4ccdce84f0b",
         "type": "github"
       },
       "original": {
         "owner": "nosDshell",
         "repo": "nosd",
-        "rev": "5154dc349eba9fe05440f20bdaecc997ae4c82e3",
+        "rev": "0f3cf1a9d754c6312ed4c563c767d4ccdce84f0b",
         "type": "github"
       }
     },
     "nosdshell": {
       "flake": false,
       "locked": {
-        "lastModified": 1794839188,
-        "narHash": "sha256-LrN/D71skGxqgU3P04emc0fVhnt49xVF7+eoi2vX5eo=",
+        "lastModified": 1794902959,
+        "narHash": "sha256-cnSBqvLUtu0Q+oJCge8xdDR0v6Q1koao9OyzFWwuNk0=",
         "owner": "nosDshell",
         "repo": "nosd",
-        "rev": "5154dc349eba9fe05440f20bdaecc997ae4c82e3",
+        "rev": "0f3cf1a9d754c6312ed4c563c767d4ccdce84f0b",
         "type": "github"
       },
       "original": {
         "owner": "nosDshell",
         "repo": "nosd",
-        "rev": "5154dc349eba9fe05440f20bdaecc997ae4c82e3",
+        "rev": "0f3cf1a9d754c6312ed4c563c767d4ccdce84f0b",
         "type": "github"
       }
     },
