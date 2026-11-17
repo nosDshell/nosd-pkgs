@@ -54,9 +54,9 @@
 ;;
 ;; The monorepo checkout contains all components; every package phases
 ;; into packages/nosdshell before building.
-(define %nosdshell-version "1.7.7.2")
-;; Must be the commit tagged nosdshell-v1.7.7.2 (check-pins.py enforces it).
-(define %nosdshell-commit "0f3cf1a9d754c6312ed4c563c767d4ccdce84f0b")
+(define %nosdshell-version "1.7.7.3")
+;; Must be the commit tagged nosdshell-v1.7.7.3 (check-pins.py enforces it).
+(define %nosdshell-commit "6358454001a654c0e79b46d3e609f3f5c4659d87")
 
 (define %nosdshell-source
   (origin
@@ -68,7 +68,7 @@
           (commit %nosdshell-commit)))
     (file-name (git-file-name "nosd" %nosdshell-version))
     (sha256
-     (base32 "0k9n5rn1bczcyjl8d4imljzp8d3l67pq2hl2z88fvdnlyam82x3j"))))
+     (base32 "0msbcm6v00c2vyrn1bqcwysgm6g711746xjcljd8726gwy3chvcm"))))
 
 ;; Our quickshell fork (nosDshell/quickshell-nosd): upstream master
 ;; kept linear on top of the version 0.3.2 commit by a daily CI sync

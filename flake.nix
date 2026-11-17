@@ -13,9 +13,9 @@
     # nosd monorepo：每组件一个 input，钉该组件最新 <component>-v<version>
     # tag 的提交，可独立升级（nix flake update nosd-gtk-theme 只动该组件）。
     # 不跟 main 上的裸 commit；tag 一致性由 tools/check-pins.py 校验。
-    nosdshell.url = "github:nosDshell/nosd/0f3cf1a9d754c6312ed4c563c767d4ccdce84f0b";
+    nosdshell.url = "github:nosDshell/nosd/6358454001a654c0e79b46d3e609f3f5c4659d87";
     nosdshell.flake = false;
-    nosd-gtk-theme.url = "github:nosDshell/nosd/636f50b76e4c73b740af6a3a5770fbb2e32ca6cc";
+    nosd-gtk-theme.url = "github:nosDshell/nosd/6358454001a654c0e79b46d3e609f3f5c4659d87";
     nosd-gtk-theme.flake = false;
     nosd-kvantum-theme.url = "github:nosDshell/nosd/0f3cf1a9d754c6312ed4c563c767d4ccdce84f0b";
     nosd-kvantum-theme.flake = false;
@@ -45,7 +45,7 @@
 
       # nosdshell 版本：发版时主版本号跟 Commons/Version.qml baseVersion，
       # shortRev 后缀保留。主题组件版本在 nix/packages/themes.nix。
-      nosdshellVersion = "1.7.7.2_" + (nosdshell.shortRev or "dirty");
+      nosdshellVersion = "1.7.7.3_" + (nosdshell.shortRev or "dirty");
 
       themeSrcs = {
         nosd-gtk-theme = nosd-gtk-theme + "/packages/nosd-gtk-theme";

@@ -32,7 +32,7 @@ in
 {
   nosd-gtk-theme = mkTheme {
     pname = "nosd-gtk-theme";
-    version = "0.3.0";
+    version = "0.3.1";
     src = srcs.nosd-gtk-theme;
     description = "DDE 15-style GTK themes (deepin / deepin-dark) for the nosDshell desktop";
     installPhase = ''

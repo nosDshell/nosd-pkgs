@@ -34,10 +34,10 @@
 ;;; 每个组件一组 pin：version 即 tag 的版本，commit 是 tag 指向的提交。
 ;;; hash 重算：git worktree add <tmp> <component>-v<version> &&
 ;;;            guix hash -S nar -x <tmp>
-(define %nosd-gtk-theme-version "0.3.0")
-(define %nosd-gtk-theme-commit "636f50b76e4c73b740af6a3a5770fbb2e32ca6cc")
+(define %nosd-gtk-theme-version "0.3.1")
+(define %nosd-gtk-theme-commit "6358454001a654c0e79b46d3e609f3f5c4659d87")
 (define %nosd-gtk-theme-hash
-  "0q0ni9lj493gixapyf0bdhdsxwlyq8p1jpli7qqrssbsxy09g7yr")
+  "0msbcm6v00c2vyrn1bqcwysgm6g711746xjcljd8726gwy3chvcm")
 
 (define %nosd-kvantum-theme-version "0.4.0")
 (define %nosd-kvantum-theme-commit
