@@ -14,6 +14,7 @@
 """
 
 import argparse
+import json
 import re
 import subprocess
 import sys
@@ -98,6 +99,18 @@ def read_flake_inputs(root):
     return {name: rev for name, rev in FLAKE_INPUT_RE.findall(text)}
 
 
+def read_flake_lock_revs(root):
+    """flake.lock 的 locked/original rev，按 input 名索引。"""
+    nodes = json.loads((root / "flake.lock").read_text())["nodes"]
+    return {
+        name: {
+            field: node.get(field, {}).get("rev")
+            for field in ("locked", "original")
+        }
+        for name, node in nodes.items()
+    }
+
+
 def read_nix_theme_versions(root):
     text = (root / "nix/packages/themes.nix").read_text()
     return dict(NIX_THEME_RE.findall(text))
@@ -113,6 +126,7 @@ def main():
     tags = upstream_tags(args.upstream)
     pins = read_pins(root)
     flake_inputs = read_flake_inputs(root)
+    flake_lock_revs = read_flake_lock_revs(root)
     nix_themes = read_nix_theme_versions(root)
 
     shell_version_match = FLAKE_SHELL_VERSION_RE.search((root / "flake.nix").read_text())
@@ -158,6 +172,19 @@ def main():
                 "%s: flake input %s 与 Guix pin %s 不一致"
                 % (component, flake_rev[:12], commit[:12])
             )
+        lock = flake_lock_revs.get(component, {})
+        for field in ("locked", "original"):
+            lock_rev = lock.get(field)
+            if lock_rev != commit:
+                errors.append(
+                    "%s: flake.lock %s rev %s 与 flake.nix/Guix pin %s 不一致"
+                    % (
+                        component,
+                        field,
+                        (lock_rev or "缺失")[:12],
+                        commit[:12],
+                    )
+                )
 
         if component == "nosdshell":
             if shell_version_match is None:
