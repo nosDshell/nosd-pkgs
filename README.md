@@ -156,9 +156,12 @@ pin，且只跟发版 tag**：
      `git -C ../nosd rev-list -n1 <component>-v<version>` 取。
    - Nix：`flake.nix` 的 input rev（同一提交），主题组件另改
      `nix/packages/themes.nix` 的 version，nosdshell 改
-     `nosdshellVersion`。
+     `nosdshellVersion`；同步 `flake.lock` 该 input 的 locked/original
+     rev、`lastModified` 与 `narHash`。
 2. 重算该组件的 hash：`git worktree add /tmp/wt <tag>` →
-   `guix hash -S nar -x /tmp/wt` → `git worktree remove /tmp/wt`。
+   `guix hash -S nar -x /tmp/wt`（Guix base32）与
+   `guix hash -S nar -f base64 -x /tmp/wt`（Nix `narHash`，前面加
+   `sha256-`）→ `git worktree remove /tmp/wt`。
 3. `python3 tools/check-pins.py` 必须全绿（它会拉上游 tag 做对比）。
 4. `quickshell-nosd-git` pin 只在 fork 推进时动（`packages.scm` 里
    commit + base32，以及 nosdshell wrapper 的 `--version` 行）。

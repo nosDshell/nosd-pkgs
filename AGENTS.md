@@ -41,8 +41,9 @@ nix/modules/                  # home.nix、nixos.nix
 ## 升级 pin
 
 - `guix/nosd/packages.scm` 的 `%nosdshell-commit`、`guix/nosd/dlea.scm` 的
-  `%dlea-commit` 与 `flake.nix` 里对应的 input rev 必须同步升级，否则
-  Guix 与 Nix 装出的不是同一棵树。
+  `%dlea-commit`、`flake.nix` 里对应的 input rev 与 `flake.lock` 的
+  locked/original rev、`lastModified`、`narHash` 必须同步升级，否则
+  Guix 与 Nix 装出的不是同一棵树；`check-pins.py` 校验三处 rev。
 - Dlea 的 `dlea` 跟 fork 的发布快照，`dlea-git` 跟 main；`dlea` 换到
   release tag 时，把 `dlea-git` 的 `git-version` 修订号归零。
 - 改完跑验证：`guix build -L guix dlea dlea-git`（Guix）、
